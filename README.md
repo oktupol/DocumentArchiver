@@ -12,7 +12,7 @@ This program uses the OCR program tesseract. On Ubuntu, install it with `sudo ap
 
 This program uses Sane's scanimage utility. On Ubuntu, install it with `sudo apt install sane`.
 
-# Usage
+## Usage
 
 Before the first use, you have to set few defaults in a file called `.documentarchiverrc` in your home directory. There are following settings:
 
