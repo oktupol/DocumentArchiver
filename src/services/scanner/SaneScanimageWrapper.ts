@@ -5,11 +5,11 @@ import { injectable } from 'inversify';
 export interface SaneScanimageWrapper {
     scanImage(
         outFile: string,
-        deviceName: string | null,
-        width: number | null,
-        height: number | null,
-        xOffset: number | null,
-        yOffset: number | null
+        deviceName?: string | null,
+        width?: number | null,
+        height?: number | null,
+        xOffset?: number | null,
+        yOffset?: number | null
     ): Promise<string>;
 }
 
@@ -17,11 +17,11 @@ export interface SaneScanimageWrapper {
 export class SaneScanimageWrapperImpl implements SaneScanimageWrapper {
     public async scanImage(
         outFile: string,
-        deviceName: string | null = null,
-        width: number | null = null,
-        height: number | null = null,
-        xOffset: number | null = null,
-        yOffset: number | null = null
+        deviceName?: string | null,
+        width?: number | null,
+        height?: number | null,
+        xOffset?: number | null,
+        yOffset?: number | null
     ): Promise<string> {
         let command = `scanimage`;
 

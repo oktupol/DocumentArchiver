@@ -8,8 +8,12 @@ import {
 } from './services/scanner/SaneScanimageWrapper';
 import { Scanner, ScannerImpl } from './services/scanner/Scanner';
 import { PaperFormatsImpl, PaperFormats } from './services/PaperFormats';
+import { Pages, PagesImpl } from './services/Pages';
+import { AppState, AppStateImpl } from './AppState';
 
 const myContainer = new Container();
+myContainer.bind<AppState>(TYPES.AppState).to(AppStateImpl);
+myContainer.bind<Pages>(TYPES.Pages).to(PagesImpl);
 myContainer.bind<PaperFormats>(TYPES.PaperFormats).to(PaperFormatsImpl);
 myContainer.bind<Rc>(TYPES.Rc).to(RcImpl);
 myContainer
