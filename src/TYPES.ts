@@ -6,6 +6,7 @@ export const TYPES = {
     Rc: Symbol.for('Rc'),
     SaneScanimageWrapper: Symbol.for('SaneScanimageWrapper'),
     Scanner: Symbol.for('Scanner'),
+    SerialNumber: Symbol.for('SerialNumber'),
     Setup: Symbol.for('Setup'),
     Tesseract: Symbol.for('Tesseract'),
     TesseractWrapper: Symbol.for('TesseractWrapper'),

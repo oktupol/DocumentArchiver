@@ -29,9 +29,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentName(documentName: string) {
-        if (this._documentName === null) {
-            this._documentName = documentName;
-        }
+        this._documentName = documentName;
     }
 
     get documentCategory(): string {
@@ -42,9 +40,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentCategory(documentCategory: string) {
-        if (this._documentCategory === null) {
-            this._documentCategory = documentCategory;
-        }
+        this._documentCategory = documentCategory;
     }
 
     get documentDate(): Date {
@@ -55,9 +51,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentDate(documentDate: Date) {
-        if (this._documentDate === null) {
-            this._documentDate = documentDate;
-        }
+        this._documentDate = documentDate;
     }
 
     get documentLang(): string {
@@ -68,9 +62,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentLang(documentLang: string) {
-        if (this._documentLang === null) {
-            this._documentLang = documentLang;
-        }
+        this._documentLang = documentLang;
     }
 
     get paperFormat(): PaperFormat {
@@ -81,9 +73,7 @@ export class AppStateImpl implements AppState {
     }
 
     set paperFormat(paperFormat: PaperFormat) {
-        if (this._paperFormat === null) {
-            this._paperFormat = paperFormat;
-        }
+        this._paperFormat = paperFormat;
     }
 
     get serialNumber(): number {
@@ -94,9 +84,7 @@ export class AppStateImpl implements AppState {
     }
 
     set serialNumber(serialNumber: number) {
-        if (this._serialNumber === null) {
-            this._serialNumber = serialNumber;
-        }
+        this._serialNumber = serialNumber;
     }
 
     get documentDirectory(): string {
@@ -107,8 +95,6 @@ export class AppStateImpl implements AppState {
     }
 
     set documentDirectory(documentDirectory: string) {
-        if (this._documentDirectory === null) {
-            this._documentDirectory = documentDirectory;
-        }
+        this._documentDirectory = documentDirectory;
     }
 }

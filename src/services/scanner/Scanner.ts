@@ -12,26 +12,18 @@ export interface Scanner {
 
 @injectable()
 export class ScannerImpl implements Scanner {
-    private _paperFormat: PaperFormat;
-
     constructor(
         @inject(TYPES.Rc) private _rc: Rc,
         @inject(TYPES.AppState) private _appState: AppState,
         @inject(TYPES.SaneScanimageWrapper)
         private _wrapper: SaneScanimageWrapper
-    ) {
-        this._paperFormat = _appState.paperFormat;
-    }
+    ) {}
 
     public async scan(page: Page): Promise<Page> {
         const scanLocation = page.scanLocation;
+        const paperFormat = this._appState.paperFormat;
 
-        this._wrapper.scanImage(
-            scanLocation,
-            this._rc.scannerDeviceName,
-            this._paperFormat.width,
-            this._paperFormat.height
-        );
+        this._wrapper.scanImage(scanLocation, this._rc.scannerDeviceName, paperFormat.width, paperFormat.height);
 
         return page;
     }
