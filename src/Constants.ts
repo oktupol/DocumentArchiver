@@ -1,6 +1,9 @@
 import { PaperFormat } from './interfaces/PaperFormat';
 
 export class Constants {
+    public static serialNumberFile = '.da-serial-number';
+    public static pageNumberLength = 4;
+
     public static paperFormats: Record<string, PaperFormat> = {
         a0: {
             name: 'a0',

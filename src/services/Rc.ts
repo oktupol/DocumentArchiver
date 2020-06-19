@@ -23,9 +23,7 @@ export interface Rc {
 export class RcImpl implements Rc {
     private _config: RcConfiguration | null = null;
 
-    constructor(
-        @inject(TYPES.PaperFormats) private _paperFormats: PaperFormats
-    ) {}
+    constructor(@inject(TYPES.PaperFormats) private _paperFormats: PaperFormats) {}
 
     get config(): RcConfiguration {
         if (this._config === null) {

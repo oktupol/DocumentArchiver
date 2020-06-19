@@ -2,6 +2,7 @@ import { injectable, inject } from 'inversify';
 import { TYPES } from '../TYPES';
 import { AppState } from '../app/AppState';
 import { Page } from '../interfaces/Page';
+import { Constants } from '../Constants';
 
 export interface Pages {
     currentPage: Page;
@@ -18,12 +19,8 @@ export class PagesImpl implements Pages {
         return {
             pageNumber: this._currentPage,
             pageNumberPadded: this._currentPagePadded,
-            scanLocation:
-                this.appState.documentDirectory +
-                `/${this._currentPagePadded}.jpg`,
-            transscriptLocation:
-                this.appState.documentDirectory +
-                `/${this._currentPagePadded}.txt`,
+            scanLocation: this.appState.documentDirectory + `/${this._currentPagePadded}.jpg`,
+            transscriptLocation: this.appState.documentDirectory + `/${this._currentPagePadded}.txt`,
         };
     }
 
@@ -32,6 +29,6 @@ export class PagesImpl implements Pages {
     }
 
     private get _currentPagePadded(): string {
-        return ('' + this._currentPage).padStart(4, '0');
+        return ('' + this._currentPage).padStart(Constants.pageNumberLength, '0');
     }
 }

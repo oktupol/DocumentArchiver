@@ -29,7 +29,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentName(documentName: string) {
-        if (this.documentName === null) {
+        if (this._documentName === null) {
             this._documentName = documentName;
         }
     }
@@ -42,7 +42,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentCategory(documentCategory: string) {
-        if (this.documentCategory === null) {
+        if (this._documentCategory === null) {
             this._documentCategory = documentCategory;
         }
     }
@@ -55,7 +55,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentDate(documentDate: Date) {
-        if (this.documentDate === null) {
+        if (this._documentDate === null) {
             this._documentDate = documentDate;
         }
     }
@@ -68,7 +68,7 @@ export class AppStateImpl implements AppState {
     }
 
     set documentLang(documentLang: string) {
-        if (this.documentLang === null) {
+        if (this._documentLang === null) {
             this._documentLang = documentLang;
         }
     }
@@ -81,7 +81,7 @@ export class AppStateImpl implements AppState {
     }
 
     set paperFormat(paperFormat: PaperFormat) {
-        if (this.paperFormat === null) {
+        if (this._paperFormat === null) {
             this._paperFormat = paperFormat;
         }
     }
@@ -94,22 +94,20 @@ export class AppStateImpl implements AppState {
     }
 
     set serialNumber(serialNumber: number) {
-        if (this.serialNumber === null) {
+        if (this._serialNumber === null) {
             this._serialNumber = serialNumber;
         }
     }
 
     get documentDirectory(): string {
         if (this._documentDirectory === null) {
-            throw new Error(
-                'Illegal state: document directory may not be null'
-            );
+            throw new Error('Illegal state: document directory may not be null');
         }
         return this._documentDirectory;
     }
 
     set documentDirectory(documentDirectory: string) {
-        if (this.documentDirectory === null) {
+        if (this._documentDirectory === null) {
             this._documentDirectory = documentDirectory;
         }
     }
