@@ -116,13 +116,13 @@ export class SetupImpl {
             '/' +
             year +
             '/' +
-            serialNumber +
-            '-' +
             month +
             '-' +
             day +
             '-' +
-            this.escapeDirectoryName(name).substr(0, 20)
+            this.escapeDirectoryName(name).substr(0, 20) +
+            '-' +
+            serialNumber
         );
     }
 
