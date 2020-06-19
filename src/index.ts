@@ -13,3 +13,4 @@ program
 program.parse(process.argv);
 
 console.log(myContainer.get<Config>(TYPES.Config).config);
+console.log(myContainer.get<Config>(TYPES.Config).paperFormat);

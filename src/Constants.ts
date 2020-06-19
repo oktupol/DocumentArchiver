@@ -1,3 +1,5 @@
+import { PaperFormat } from './interfaces/PaperFormat';
+
 export class Constants {
     public static paperFormats: Record<string, PaperFormat> = {
         a0: {

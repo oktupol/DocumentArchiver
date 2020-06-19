@@ -1,4 +1,4 @@
-interface PaperFormat {
+export interface PaperFormat {
     /**
      * The name of this paper format.
      */

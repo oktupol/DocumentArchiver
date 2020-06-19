@@ -7,9 +7,11 @@ import {
     SaneScanimageWrapperImpl,
 } from './services/scanner/SaneScanimageWrapper';
 import { Scanner, ScannerImpl } from './services/scanner/Scanner';
+import { PaperFormatsImpl, PaperFormats } from './services/PaperFormats';
 
 const myContainer = new Container();
 myContainer.bind<Config>(TYPES.Config).to(ConfigImpl);
+myContainer.bind<PaperFormats>(TYPES.PaperFormats).to(PaperFormatsImpl);
 myContainer
     .bind<SaneScanimageWrapper>(TYPES.SaneScanimageWrapper)
     .to(SaneScanimageWrapperImpl);
