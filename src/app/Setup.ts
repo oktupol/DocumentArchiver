@@ -3,9 +3,9 @@ import { sync } from 'command-exists';
 import { TYPES } from '../TYPES';
 import { Rc } from '../services/Rc';
 import { AppState } from './AppState';
-import { existsSync, lstatSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, lstatSync, mkdirSync, writeFileSync, readdirSync } from 'fs';
 import { Constants } from '../Constants';
-import { prompt, Answers, QuestionCollection } from 'inquirer';
+import { prompt, Answers, QuestionCollection, Separator } from 'inquirer';
 import { PaperFormats } from '../services/PaperFormats';
 import { SerialNumber } from '../services/SerialNumber';
 
@@ -63,7 +63,11 @@ export class SetupImpl {
                         }
 
                         this.appState.documentName = answers.documentName;
-                        this.appState.documentCategory = answers.documentCategory;
+                        if (answers.newDocumentCategory) {
+                            this.appState.documentCategory = answers.newDocumentCategory;
+                        } else {
+                            this.appState.documentCategory = answers.documentCategory;
+                        }
                         this.appState.documentLang = answers.documentLang;
                         this.appState.documentDate = new Date(answers.documentDate);
                         this.appState.paperFormat = this.paperFormats.getPaperFormat(answers.paperFormat);
@@ -139,6 +143,8 @@ export class SetupImpl {
             return 'Enter a value';
         };
 
+        const categories = [Constants.newCategory, new Separator(), ...this.readCategories()];
+
         const today = new Date();
         const year = Intl.DateTimeFormat('en', { year: 'numeric' }).format(today);
         const month = Intl.DateTimeFormat('en', { month: '2-digit' }).format(today);
@@ -160,11 +166,19 @@ export class SetupImpl {
                 when: shouldCreateDocument,
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'documentCategory',
                 message: 'Which category does this document belong to?',
-                validate: notEmpty,
+                choices: categories,
+                default: Constants.newCategory,
                 when: shouldCreateDocument,
+            },
+            {
+                type: 'input',
+                name: 'newDocumentCategory',
+                message: 'What should the new category be called?',
+                validate: notEmpty,
+                when: answers => shouldCreateDocument(answers) && answers.documentCategory === Constants.newCategory,
             },
             {
                 type: 'input',
@@ -198,5 +212,11 @@ export class SetupImpl {
         ];
 
         return questions;
+    }
+
+    private readCategories(): string[] {
+        return readdirSync(this.rc.archiveDirectory!, { withFileTypes: true })
+            .filter(dir => dir.isDirectory())
+            .map(dir => dir.name);
     }
 }
