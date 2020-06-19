@@ -1,15 +1,16 @@
 import { exec } from 'child_process';
+import { promisify } from 'util';
 
 export class SaneScanimageWrapper {
-    public static async scanImage(
+    public async scanImage(
         outFile: string,
-        deviceName: string | null,
-        width: number | null,
-        height: number | null,
-        xOffset: number | null,
-        yOffset: number | null
+        deviceName: string | null = null,
+        width: number | null = null,
+        height: number | null = null,
+        xOffset: number | null = null,
+        yOffset: number | null = null
     ): Promise<string> {
-        let command = `scanimage -o ${outFile}`;
+        let command = `scanimage`;
 
         if (deviceName !== null) {
             command += ` -d '${deviceName}'`;
@@ -31,11 +32,9 @@ export class SaneScanimageWrapper {
             command += ` -t ${yOffset}`;
         }
 
-        const { exitCode } = await exec(command);
+        command += ` --format jpeg -o ${outFile}`;
 
-        if (exitCode !== null && exitCode > 0) {
-            throw new Error(`Could not scan image. Code ${exitCode}`);
-        }
+        await promisify(exec)(command);
 
         return outFile;
     }
