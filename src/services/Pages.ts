@@ -1,6 +1,5 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../TYPES';
-import { Rc } from './Rc';
 import { AppState } from '../AppState';
 import { Page } from '../interfaces/Page';
 

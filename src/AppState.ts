@@ -1,7 +1,5 @@
 import { PaperFormat } from './interfaces/PaperFormat';
-import { injectable, inject } from 'inversify';
-import { TYPES } from './TYPES';
-import { Rc } from './services/Rc';
+import { injectable } from 'inversify';
 
 export interface AppState {
     documentName: string;
@@ -21,7 +19,7 @@ export class AppStateImpl implements AppState {
     private _documentLang: string | null = null;
     private _paperFormat: PaperFormat | null = null;
     private _serialNumber: number | null = null;
-    private _documentDirectory: stirng | null = null;
+    private _documentDirectory: string | null = null;
 
     get documentName(): string {
         if (this._documentName === null) {
