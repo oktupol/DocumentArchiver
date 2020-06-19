@@ -2,8 +2,8 @@
 
 import program from 'commander';
 import { myContainer } from './inversify.config';
-import { Rc } from './services/Rc';
 import { TYPES } from './TYPES';
+import { App } from './app/App';
 
 program
     .name('documentarchiver')
@@ -12,5 +12,4 @@ program
 
 program.parse(process.argv);
 
-console.log(myContainer.get<Rc>(TYPES.Rc).config);
-console.log(myContainer.get<Rc>(TYPES.Rc).paperFormat);
+myContainer.get<App>(TYPES.App).run();

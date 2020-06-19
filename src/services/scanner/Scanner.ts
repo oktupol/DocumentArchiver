@@ -2,7 +2,7 @@ import { injectable, inject } from 'inversify';
 import { TYPES } from '../../TYPES';
 import { SaneScanimageWrapper } from './SaneScanimageWrapper';
 import { Page } from '../../interfaces/Page';
-import { AppState } from '../../AppState';
+import { AppState } from '../../app/AppState';
 import { PaperFormat } from '../../interfaces/PaperFormat';
 import { Rc } from '../Rc';
 

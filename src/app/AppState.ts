@@ -1,4 +1,4 @@
-import { PaperFormat } from './interfaces/PaperFormat';
+import { PaperFormat } from '../interfaces/PaperFormat';
 import { injectable } from 'inversify';
 
 export interface AppState {

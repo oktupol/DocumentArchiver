@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../TYPES';
-import { AppState } from '../AppState';
+import { AppState } from '../app/AppState';
 import { Page } from '../interfaces/Page';
 
 export interface Pages {

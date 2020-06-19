@@ -9,9 +9,11 @@ import {
 import { Scanner, ScannerImpl } from './services/scanner/Scanner';
 import { PaperFormatsImpl, PaperFormats } from './services/PaperFormats';
 import { Pages, PagesImpl } from './services/Pages';
-import { AppState, AppStateImpl } from './AppState';
+import { AppState, AppStateImpl } from './app/AppState';
+import { App, AppImpl } from './app/App';
 
 const myContainer = new Container();
+myContainer.bind<App>(TYPES.App).to(AppImpl);
 myContainer.bind<AppState>(TYPES.AppState).to(AppStateImpl);
 myContainer.bind<Pages>(TYPES.Pages).to(PagesImpl);
 myContainer.bind<PaperFormats>(TYPES.PaperFormats).to(PaperFormatsImpl);

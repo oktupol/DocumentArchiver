@@ -1,4 +1,5 @@
 export const TYPES = {
+    App: Symbol.for('App'),
     AppState: Symbol.for('AppState'),
     Pages: Symbol.for('Pages'),
     PaperFormats: Symbol.for('PaperFormats'),
