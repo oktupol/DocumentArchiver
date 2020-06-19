@@ -9,6 +9,8 @@ import { Pages, PagesImpl } from './services/Pages';
 import { AppState, AppStateImpl } from './app/AppState';
 import { App, AppImpl } from './app/App';
 import { Setup, SetupImpl } from './app/Setup';
+import { Tesseract, TesseractImpl } from './services/tesseract/Tesseract';
+import { TesseractWrapper, TesseractWrapperImpl } from './services/tesseract/TesseractWrapper';
 
 const myContainer = new Container();
 myContainer.bind<App>(TYPES.App).to(AppImpl);
@@ -19,5 +21,7 @@ myContainer.bind<Rc>(TYPES.Rc).to(RcImpl);
 myContainer.bind<SaneScanimageWrapper>(TYPES.SaneScanimageWrapper).to(SaneScanimageWrapperImpl);
 myContainer.bind<Scanner>(TYPES.Scanner).to(ScannerImpl);
 myContainer.bind<Setup>(TYPES.Setup).to(SetupImpl);
+myContainer.bind<Tesseract>(TYPES.Tesseract).to(TesseractImpl);
+myContainer.bind<TesseractWrapper>(TYPES.TesseractWrapper).to(TesseractWrapperImpl);
 
 export { myContainer };

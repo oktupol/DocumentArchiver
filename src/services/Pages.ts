@@ -20,7 +20,7 @@ export class PagesImpl implements Pages {
             pageNumber: this._currentPage,
             pageNumberPadded: this._currentPagePadded,
             scanLocation: this.appState.documentDirectory + `/${this._currentPagePadded}.jpg`,
-            transscriptLocation: this.appState.documentDirectory + `/${this._currentPagePadded}.txt`,
+            transscriptLocation: this.appState.documentDirectory + `/${this._currentPagePadded}`,
         };
     }
 

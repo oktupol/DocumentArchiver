@@ -7,4 +7,6 @@ export const TYPES = {
     SaneScanimageWrapper: Symbol.for('SaneScanimageWrapper'),
     Scanner: Symbol.for('Scanner'),
     Setup: Symbol.for('Setup'),
+    Tesseract: Symbol.for('Tesseract'),
+    TesseractWrapper: Symbol.for('TesseractWrapper'),
 };
