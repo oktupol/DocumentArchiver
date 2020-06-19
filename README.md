@@ -28,7 +28,7 @@ This leaves me with plenty of advantages:
 
 ## Requirements
 
-I haven't tested this program on any other machine than mine, which runs Ubuntu. It should work on Linux and Mac machines, but it'll probably not run on Windows.
+I didn't test this program on any other machine than mine, which runs on Ubuntu. It should work on Linux and Mac machines, but it'll probably not run on Windows.
 
 This program uses the OCR program tesseract. On Ubuntu, install it with `sudo apt install tesseract-ocr`, along with at least one language package such as `tesseract-orc-deu`.
 
