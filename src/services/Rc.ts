@@ -4,15 +4,15 @@ import { PaperFormat } from '../interfaces/PaperFormat';
 import { PaperFormats } from './PaperFormats';
 import { TYPES } from '../TYPES';
 
-interface ConfigObject {
+interface RcConfiguration {
     tesseractLang: string | null;
     scannerDeviceName: string | null;
     paperFormat: string | null;
     archiveDirectory: string | null;
 }
 
-export interface Config {
-    config: ConfigObject;
+export interface Rc {
+    config: RcConfiguration;
     tesseractLang: string | null;
     scannerDeviceName: string | null;
     paperFormat: PaperFormat | null;
@@ -20,21 +20,21 @@ export interface Config {
 }
 
 @injectable()
-export class ConfigImpl implements Config {
-    private _config: ConfigObject | null = null;
+export class RcImpl implements Rc {
+    private _config: RcConfiguration | null = null;
 
     constructor(
         @inject(TYPES.PaperFormats) private _paperFormats: PaperFormats
     ) {}
 
-    get config(): ConfigObject {
+    get config(): RcConfiguration {
         if (this._config === null) {
             this._config = rc('documentarchiver', {
                 tesseractLang: null,
                 scannerDeviceName: null,
                 paperFormat: null,
                 archiveDirectory: null,
-            }) as ConfigObject;
+            }) as RcConfiguration;
         }
 
         return this._config;

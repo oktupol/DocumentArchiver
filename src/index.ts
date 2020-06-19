@@ -2,7 +2,7 @@
 
 import program from 'commander';
 import { myContainer } from './inversify.config';
-import { Config } from './services/Config';
+import { Rc } from './services/Rc';
 import { TYPES } from './TYPES';
 
 program
@@ -12,5 +12,5 @@ program
 
 program.parse(process.argv);
 
-console.log(myContainer.get<Config>(TYPES.Config).config);
-console.log(myContainer.get<Config>(TYPES.Config).paperFormat);
+console.log(myContainer.get<Rc>(TYPES.Rc).config);
+console.log(myContainer.get<Rc>(TYPES.Rc).paperFormat);

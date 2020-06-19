@@ -1,6 +1,6 @@
 export const TYPES = {
-    Config: Symbol.for('Config'),
     PaperFormats: Symbol.for('PaperFormats'),
+    Rc: Symbol.for('Rc'),
     SaneScanimageWrapper: Symbol.for('SaneScanimageWrapper'),
     Scanner: Symbol.for('Scanner'),
 };
