@@ -11,7 +11,7 @@ export interface Pages {
 
 @injectable()
 export class PagesImpl implements Pages {
-    private _currentPage = 0;
+    private _currentPage = 1;
 
     constructor(@inject(TYPES.AppState) private appState: AppState) {}
 
@@ -19,8 +19,8 @@ export class PagesImpl implements Pages {
         return {
             pageNumber: this._currentPage,
             pageNumberPadded: this._currentPagePadded,
-            scanLocation: this.appState.documentDirectory + `/${this._currentPagePadded}.jpg`,
-            transscriptLocation: this.appState.documentDirectory + `/${this._currentPagePadded}`,
+            scanLocation: this.appState.documentDirectory + `/p${this._currentPagePadded}.jpg`,
+            transscriptLocation: this.appState.documentDirectory + `/p${this._currentPagePadded}`,
         };
     }
 

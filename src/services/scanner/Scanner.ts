@@ -3,7 +3,6 @@ import { TYPES } from '../../TYPES';
 import { SaneScanimageWrapper } from './SaneScanimageWrapper';
 import { Page } from '../../interfaces/Page';
 import { AppState } from '../../app/AppState';
-import { PaperFormat } from '../../interfaces/PaperFormat';
 import { Rc } from '../Rc';
 
 export interface Scanner {
@@ -23,7 +22,7 @@ export class ScannerImpl implements Scanner {
         const scanLocation = page.scanLocation;
         const paperFormat = this._appState.paperFormat;
 
-        this._wrapper.scanImage(scanLocation, this._rc.scannerDeviceName, paperFormat.width, paperFormat.height);
+        await this._wrapper.scanImage(scanLocation, this._rc.scannerDeviceName, paperFormat.width, paperFormat.height);
 
         return page;
     }

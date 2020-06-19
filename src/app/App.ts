@@ -8,6 +8,8 @@ import { Scanner } from '../services/scanner/Scanner';
 import { mkdirSync, writeFileSync } from 'fs';
 import chalk from 'chalk';
 import { SerialNumber } from '../services/SerialNumber';
+import { prompt } from 'inquirer';
+import { Page } from '../interfaces/Page';
 
 export interface App {
     run(): void;
@@ -27,10 +29,15 @@ export class AppImpl implements App {
     public run(): void {
         this.checkPrerequisites();
 
-        this.setup.setup().then(() => {
-            this.createDocumentDirectory();
-            this.scanPages();
-        });
+        this.setup
+            .setup()
+            .then(() => {
+                this.createDocumentDirectory();
+                return this.scanPages();
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
     }
 
     private createDocumentDirectory(): void {
@@ -53,7 +60,40 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
         this.serialNumber.incrementSerialNumber();
     }
 
-    private scanPages(): void {}
+    private async scanPages(): Promise<void> {
+        while (true) {
+            await this.scanPage(this.pages.currentPage);
+            this.pages.nextPage();
+        }
+    }
+
+    private scanPage(page: Page): Promise<Page> {
+        return prompt([
+            {
+                type: 'confirm',
+                name: 'scan',
+                message: `Scan page #${page.pageNumber}?`,
+            },
+        ])
+            .then(
+                answer =>
+                    new Promise<Page>((resolve, reject) => {
+                        if (answer.scan === false) {
+                            reject(new Error('Stopped scanning pages'));
+                        } else {
+                            resolve(page);
+                        }
+                    })
+            )
+            .then(page => {
+                console.log(chalk.gray(`Scanning page ${page.pageNumber}`));
+                return this.scanner.scan(page);
+            })
+            .then(page => {
+                console.log(chalk.gray(`Transscribing page ${page.pageNumber}`));
+                return this.tesseract.transscribe(page);
+            });
+    }
 
     private checkPrerequisites(): void {
         try {
