@@ -47,6 +47,8 @@
     "chalk": "^4.1.0",
     "commander": "^5.1.0",
     "inquirer": "^7.2.0",
-    "rc": "^1.2.8"
+    "inversify": "^5.0.1",
+    "rc": "^1.2.8",
+    "reflect-metadata": "^0.1.13"
   }
 }

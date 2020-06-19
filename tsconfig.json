@@ -7,8 +7,10 @@
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
-    "types": ["node"],
+    "types": ["node", "reflect-metadata"],
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   }
 }

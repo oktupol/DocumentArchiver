@@ -1,4 +1,5 @@
 import rc from 'rc';
+import { injectable } from 'inversify';
 
 interface ConfigObject {
     tesseractLang: string | null;
@@ -7,7 +8,16 @@ interface ConfigObject {
     archiveDirectory: string | null;
 }
 
-export class Config {
+export interface Config {
+    config: ConfigObject;
+    tesseractLang: string | null;
+    scannerDeviceName: string | null;
+    paperFormat: string | null;
+    archiveDirectory: string | null;
+}
+
+@injectable()
+export class ConfigImpl implements Config {
     private _config: ConfigObject | null = null;
 
     get config(): ConfigObject {

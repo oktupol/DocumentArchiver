@@ -1,7 +1,20 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { injectable } from 'inversify';
 
-export class SaneScanimageWrapper {
+export interface SaneScanimageWrapper {
+    scanImage(
+        outFile: string,
+        deviceName: string | null,
+        width: number | null,
+        height: number | null,
+        xOffset: number | null,
+        yOffset: number | null
+    ): Promise<string>;
+}
+
+@injectable()
+export class SaneScanimageWrapperImpl implements SaneScanimageWrapper {
     public async scanImage(
         outFile: string,
         deviceName: string | null = null,
