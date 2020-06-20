@@ -125,12 +125,12 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
             });
     }
 
-    private transscribePages(pages: Page[]): void {
+    private transscribePages(pages: Page[]): Promise<Array<Page>> {
         const outputCallback = (...args: any[]): void => {
             return console.log(chalk.gray(args));
         };
 
-        this.tesseract.transscribeMultiple(pages, outputCallback);
+        return this.tesseract.transscribeMultiple(pages, outputCallback);
     }
 
     private logSerialNumber(): void {
