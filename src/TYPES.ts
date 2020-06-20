@@ -11,3 +11,5 @@ export const TYPES = {
     Tesseract: Symbol.for('Tesseract'),
     TesseractWrapper: Symbol.for('TesseractWrapper'),
 };
+
+export type OutputCallback = (arg0: any) => void;

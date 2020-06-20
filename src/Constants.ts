@@ -5,6 +5,8 @@ export class Constants {
     public static pageNumberLength = 4;
     public static serialNumberLength = 6;
     public static newCategory = 'New Category';
+    public static stoppedMessage = 'Stopped scanning pages.';
+    public static tesseractOutFile = 'summary';
 
     public static paperFormats: Record<string, PaperFormat> = {
         a0: {

@@ -10,6 +10,7 @@ import chalk from 'chalk';
 import { SerialNumber } from '../services/SerialNumber';
 import { prompt } from 'inquirer';
 import { Page } from '../interfaces/Page';
+import { Constants } from '../Constants';
 
 export interface App {
     run(): void;
@@ -33,7 +34,19 @@ export class AppImpl implements App {
             .setup()
             .then(() => {
                 this.createDocumentDirectory();
+                this.logSerialNumber();
                 return this.scanPages();
+            })
+            .then(pages => {
+                this.logSerialNumber();
+                return pages;
+            })
+            .then(pages => {
+                return this.transscribePages(pages);
+            })
+            .then(() => {
+                this.logSerialNumber();
+                console.log(chalk.green('Done.'));
             })
             .catch(error => {
                 console.log(error.message);
@@ -53,18 +66,39 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
         );
 
         console.log(chalk.gray(`Created directory ${documentDirectory}`));
-        console.log(
-            chalk.white.bgGreen(`  This document's serial number is `) + chalk.white.bgGreen.bold(`${serialNumber}  `)
-        );
 
         this.serialNumber.incrementSerialNumber();
     }
 
-    private async scanPages(): Promise<void> {
+    private async scanPages(): Promise<Array<Page>> {
+        const pages: Page[] = [];
+        let stopScanning = false;
+
         while (true) {
-            await this.scanPage(this.pages.currentPage);
-            this.pages.nextPage();
+            await this.scanPage(this.pages.currentPage)
+                .then(page => {
+                    pages.push(page);
+                    return page;
+                })
+                .then(() => {
+                    this.pages.nextPage();
+                })
+                .catch(error => {
+                    if (error.message === Constants.stoppedMessage) {
+                        console.log('Stopped scanning pages');
+                        stopScanning = true;
+                    } else {
+                        console.log('Got error ' + error.message);
+                        console.log('Retrying scan');
+                    }
+                });
+
+            if (stopScanning) {
+                break;
+            }
         }
+
+        return pages;
     }
 
     private scanPage(page: Page): Promise<Page> {
@@ -79,7 +113,7 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
                 answer =>
                     new Promise<Page>((resolve, reject) => {
                         if (answer.scan === false) {
-                            reject(new Error('Stopped scanning pages'));
+                            reject(new Error(Constants.stoppedMessage));
                         } else {
                             resolve(page);
                         }
@@ -88,11 +122,22 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
             .then(page => {
                 console.log(chalk.gray(`Scanning page ${page.pageNumber}`));
                 return this.scanner.scan(page);
-            })
-            .then(page => {
-                console.log(chalk.gray(`Transscribing page ${page.pageNumber}`));
-                return this.tesseract.transscribe(page);
             });
+    }
+
+    private transscribePages(pages: Page[]): void {
+        const outputCallback = (...args: any[]): void => {
+            return console.log(chalk.gray(args));
+        };
+
+        this.tesseract.transscribeMultiple(pages, outputCallback);
+    }
+
+    private logSerialNumber(): void {
+        console.log(
+            chalk.white.bgGreen(`  This document's serial number is `) +
+                chalk.white.bgGreen.bold(`${this.appState.serialNumber}  `)
+        );
     }
 
     private checkPrerequisites(): void {
