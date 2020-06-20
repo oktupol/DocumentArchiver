@@ -2,7 +2,7 @@ import { injectable, inject } from 'inversify';
 import { TYPES } from '../TYPES';
 import { Rc } from './Rc';
 import { Constants } from '../Constants';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 export interface SerialNumber {
     currentSerialNumber: number;
@@ -18,6 +18,10 @@ export class SerialNumberImpl implements SerialNumber {
     }
 
     public get currentSerialNumber(): number {
+        if (!existsSync(this.serialNumberFilePath)) {
+            return 1;
+        }
+
         return +readFileSync(this.serialNumberFilePath);
     }
 

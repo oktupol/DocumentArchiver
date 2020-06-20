@@ -215,6 +215,10 @@ export class SetupImpl {
     }
 
     private readCategories(): string[] {
+        if (!this.archiveDirectoryExists()) {
+            return [];
+        }
+
         return readdirSync(this.rc.archiveDirectory!, { withFileTypes: true })
             .filter(dir => dir.isDirectory())
             .map(dir => dir.name);

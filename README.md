@@ -1,8 +1,6 @@
 # DocumentArchiver
 
-This is going to be a command line tool to use for archiving physical documents. Work in progress.
-
-Installation and usage manuals will be added later.
+This is a command line tool to use for archiving physical documents.
 
 ## Principle
 
@@ -31,6 +29,8 @@ This leaves me with plenty of advantages:
 
 I didn't test this program on any other machine than mine, which runs on Ubuntu. It should work on Linux and Mac machines, but it'll probably not run on Windows.
 
+This program runs on Node.js. Currently it's not published as npm package and I do not plan to do so, mainly due to me being to lazy to write tests, however, you may compile this program from the source.
+
 This program uses the OCR program tesseract. On Ubuntu, install it with `sudo apt install tesseract-ocr`, along with at least one language package such as `tesseract-orc-deu`.
 
 This program uses Sane's scanimage utility. On Ubuntu, install it with `sudo apt install sane`.
@@ -40,7 +40,7 @@ This program uses Sane's scanimage utility. On Ubuntu, install it with `sudo apt
 Before the first use, you have to set few defaults in a file called `.documentarchiverrc` in your home directory. There are following settings:
 
 - archiveDirectory (mandatory): The directory in which your archive should be stored. If it doesn't exist, this program will create it upon first usage.
-- paperFormat (optional): The default paper format you scan your documents in. For example 'a4' or 'a5'. Currently, only DIN (international) paper formats from A0 to A8 are supported. If you need American paper formats, you can amend them in the file `src/Constants.ts`. The program will ask about the paper format for each document and, if set, automatically pre-select the configured default paper format so that you only have to confirm it with Enter.
+- paperFormat (optional): The default paper format you scan your documents in. For example 'a4' or 'a5'. Currently, only DIN (international) paper formats from A4 to A6 are supported. If you need American paper formats, you can amend them in the file `src/Constants.ts`. The program will ask about the paper format for each document and, if set, automatically pre-select the configured default paper format so that you only have to confirm it with Enter.
 - scannerDeviceName (optional): The scanner device name as determined by `scanimage -L`. If not set, no device name will be passed to `scanimage` and the system default scanner will be used.
 - tesseractLang (optional): The language which `tesseract` should use. Use the same format for specifying the language as `tesseract` expects for its `-l` parameter. If none is specified, none will be passed on.
 
@@ -52,3 +52,29 @@ paperFormat = a4
 scannerDeviceName = dsseries:usb:0x04F9:0x60E0
 tesseractLang = deu
 ```
+
+## Installation
+
+Assuming you installed all prerequisites, check out this repository. Navigate into it and type following commands:
+
+```
+npm install
+npm run build
+npm install -g
+```
+
+This will create a symlink inside your global npm bin directory. If this directory is in your `$PATH`, you now have a globally available program called `documentarchiver`.
+
+Alternatively, if you don't want to install this program globally, omit the last command and execute the generated `lib/index.js` directly.
+
+## Usage
+
+Once you created your `.documenarchiverrc` file and you installed the program, start calling it in your command line with `documentarchiver`. Upon first usage you will be asked whether you want to create the archive directory. 
+
+Follow the instructions by the program. You will have to enter some basic information about the document to be scanned, and then scan each page individually. Once done, write the serial number given by the program on the document, and put it inside a folder. The documents inside the folder should be ordered sequentially, by the serial number, regardless of category, chronological age, or importance. That makes finding them easier.
+
+If, for some reason, you need to re-use or skip a serial number, you may do so by editing the file `.da-serial-number` inside your archive's root directory, before executing the program. This file will usually contain the _next_ serial number, i.e. one higher than the highest serial number of any of your documents. There will be no checks whether a serial number already exists.
+
+## Contributing
+
+If you find bugs or have ideas what to change, feel free to write an issue here on Github or open a pull request. I am not sure how much time I'm going to have to look into those, but I'm going to do my best.
