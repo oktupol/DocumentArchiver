@@ -13,9 +13,9 @@ Here is how it works:
 - When receiving an important letter or any other document that I need to archive, I scan it with this program.
 - First, the program asks me which category this document belongs to. Categories are being represented by sub-directories in the archive.
 - Then, the program asks me for a name for this document. Another sub-directory inside the category directory will be created with that name.
-- Each page is scanned individually and saved in the sub-directory created for the document. The pages are saved as jpeg-files with numbers as file names, starting at 0000.jpg, then 0001.jpg etc.
-- Tesseract, an OCR tool, goes through each page and transscribes it into a text file with the same name as the image: 0000.txt, 0001.txt etc. It's not important that the text file is formatted in the same way as the original document. The only thing that matters is that every word, every sentence in the original document has to be present in the text file in one way or another.
-- Finally, an incremental serial number is created for the document. The first document starts at 0, the next one is 1, then 2 and so on. This serial number is saved as the name of an empty file in the document's directory, e.g. The 1731st document receives an empty file named `1731.docid`.
+- Each page is scanned individually and saved in the sub-directory created for the document. The pages are saved as jpeg-files with numbers as file names, starting at 0001.jpg, then 0002.jpg etc.
+- Tesseract, an OCR tool, goes through each page and transscribes them into a text file `summary.txt`. It's not important that the text file is formatted in the same way as the original document. The only thing that matters is that every word, every sentence in the original document has to be present in the text file in one way or another.
+- Finally, an incremental serial number is created for the document. The first document starts at 1, the next one is 2, then 3 and so on. This serial number is saved as the name of a file in the document's directory, e.g. The 1731st document receives a file named `1731.docid`. This file will also contain some basic information about the document.
 - I write the serial number on the original document with a text marker and put it into a folder, on top of the last document. I do not sort the documents physically.
 - Once the folder is full, I write the first and the last serial numbers of the documents inside this folder on its back and start putting new documents in a new, empty folder.
 
