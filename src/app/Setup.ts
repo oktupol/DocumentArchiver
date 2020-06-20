@@ -127,7 +127,7 @@ export class SetupImpl {
     }
 
     private escapeDirectoryName(name: string): string {
-        return name.replace(/[^a-zA-Z0-9-._]/g, '-');
+        return name.replace(Constants.escapePattern, '-');
     }
 
     private createQuestions(): QuestionCollection {

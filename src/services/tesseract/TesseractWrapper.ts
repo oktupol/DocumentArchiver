@@ -47,6 +47,9 @@ export class TesseractWrapperImpl implements TesseractWrapper {
         spawnargs.push('stdin');
         spawnargs.push(outFile);
 
+        spawnargs.push('pdf');
+        spawnargs.push('txt');
+
         return new Promise<string>((resolve, reject) => {
             const child = spawn(command, spawnargs);
             child.stdin.write(inFiles + '\n');

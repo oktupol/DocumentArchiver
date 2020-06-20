@@ -5,7 +5,7 @@ import { AppState } from './AppState';
 import { Pages } from '../services/Pages';
 import { Tesseract } from '../services/tesseract/Tesseract';
 import { Scanner } from '../services/scanner/Scanner';
-import { mkdirSync, writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync, unlinkSync, renameSync } from 'fs';
 import chalk from 'chalk';
 import { SerialNumber } from '../services/SerialNumber';
 import { prompt } from 'inquirer';
@@ -42,10 +42,25 @@ export class AppImpl implements App {
                 return pages;
             })
             .then(pages => {
+                process.stdout.write(chalk.gray('Compiling pdf...'));
                 return this.transscribePages(pages);
             })
-            .then(() => {
-                this.logSerialNumber();
+            .then(pages => {
+                console.log();
+                console.log(chalk.gray('Done compiling pdf'));
+                console.log(chalk.gray('Removing raw images'));
+
+                for (const page of pages) {
+                    unlinkSync(page.scanLocation);
+                }
+
+                const pdfFileName = this.appState.documentName.replace(Constants.escapePattern, '-');
+
+                renameSync(
+                    this.appState.documentDirectory + '/' + Constants.tesseractOutFile + '.pdf',
+                    this.appState.documentDirectory + '/' + pdfFileName + '.pdf'
+                );
+
                 console.log(chalk.green('Done.'));
             })
             .catch(error => {
@@ -85,7 +100,7 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
                 })
                 .catch(error => {
                     if (error.message === Constants.stoppedMessage) {
-                        console.log('Stopped scanning pages');
+                        console.log('Done scanning pages');
                         stopScanning = true;
                     } else {
                         console.log('Got error ' + error.message);
@@ -126,8 +141,8 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
     }
 
     private transscribePages(pages: Page[]): Promise<Array<Page>> {
-        const outputCallback = (...args: any[]): void => {
-            return console.log(chalk.gray(args));
+        const outputCallback = (): void => {
+            process.stdout.write(chalk.gray('.'));
         };
 
         return this.tesseract.transscribeMultiple(pages, outputCallback);

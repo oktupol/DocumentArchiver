@@ -14,7 +14,7 @@ Here is how it works:
 - First, the program asks me which category this document belongs to. Categories are being represented by sub-directories in the archive.
 - Then, the program asks me for a name for this document. Another sub-directory inside the category directory will be created with that name.
 - Each page is scanned individually and saved in the sub-directory created for the document. The pages are saved as jpeg-files with numbers as file names, starting at 0001.jpg, then 0002.jpg etc.
-- Tesseract, an OCR tool, goes through each page and transscribes them into a text file `summary.txt`. It's not important that the text file is formatted in the same way as the original document. The only thing that matters is that every word, every sentence in the original document has to be present in the text file in one way or another.
+- Tesseract, an OCR tool, goes through each page and compiles them into a PDF. Also, it transscribes the into a text file `summary.txt`. It's not important that the text file is formatted in the same way as the original document. The only thing that matters is that every word, every sentence in the original document has to be present in the text file in one way or another.
 - Finally, an incremental serial number is created for the document. The first document starts at 1, the next one is 2, then 3 and so on. This serial number is saved as the name of a file in the document's directory, e.g. The 1731st document receives a file named `1731.docid`. This file will also contain some basic information about the document.
 - I write the serial number on the original document with a text marker and put it into a folder, on top of the last document. I do not sort the documents physically.
 - Once the folder is full, I write the first and the last serial numbers of the documents inside this folder on its back and start putting new documents in a new, empty folder.
@@ -23,8 +23,9 @@ This leaves me with plenty of advantages:
 
 - First of all, I have digital backups of all important documents.
 - I never have to take a document out of a folder again if someone wants a digital copy of it, which decreases wear and tear on the documents. If I need to find a scan of a physical document, I can do it in a matter of seconds with `find . -name [serial number].docid`.
+- Inside the PDF files I can search for terms using the PDF reader's regular search capabilities.
 - I can use `grep` to search for documents containing certain terms, thanks to the transscripts created by `tesseract`.
-- If I need a physical copy, I just need to look at its serial number. Then take out the folder whose serial number range on its back contains this serial number, and look for the document much like looking for a page in a book.
+- If I need a physical copy, I just need to look at the digital copy's serial number. Then take out the folder whose serial number range on its back contains this serial number, and look for the document much like looking for a page in a book.
 
 ## Requirements
 

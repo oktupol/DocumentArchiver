@@ -7,6 +7,7 @@ export class Constants {
     public static newCategory = 'New Category';
     public static stoppedMessage = 'Stopped scanning pages.';
     public static tesseractOutFile = 'summary';
+    public static escapePattern = /[^a-zA-Z0-9-._äöüÄÖÜß]/g;
 
     public static paperFormats: Record<string, PaperFormat> = {
         a0: {
