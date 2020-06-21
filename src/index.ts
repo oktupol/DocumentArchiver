@@ -10,7 +10,8 @@ program
     .name('documentarchiver')
     .version('0.1.0')
     .description('Propertly archive physical documents digitally')
-    .option('-p, --pdf-file <file>', 'Add an existing PDF into the archive.');
+    .option('-p, --pdf-file <file>', 'Add an existing PDF into the archive.')
+    .option('-d, --delete-original', 'Whether the original pdf file should be deleted.', false);
 
 program.parse(process.argv);
 
@@ -19,6 +20,7 @@ const state = myContainer.get<AppState>(TYPES.AppState);
 if (program.pdfFile) {
     state.isExistingPdf = true;
     state.existingPdfLocation = program.pdfFile;
+    state.deleteOriginalPdf = program.deleteOriginal;
 } else {
     state.isExistingPdf = false;
 }

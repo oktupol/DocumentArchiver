@@ -11,6 +11,7 @@ export interface AppState {
     documentDirectory: string;
     isExistingPdf: boolean;
     existingPdfLocation: string | null;
+    deleteOriginalPdf: boolean | null;
 }
 
 @injectable()
@@ -25,6 +26,7 @@ export class AppStateImpl implements AppState {
     private _isExistingPdf: boolean | null = null;
 
     public existingPdfLocation: string | null = null;
+    public deleteOriginalPdf: boolean | null = null;
 
     get documentName(): string {
         if (this._documentName === null) {

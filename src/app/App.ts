@@ -69,6 +69,10 @@ export class AppImpl implements App {
                 pdfDestination,
                 this.appState.documentDirectory + '/' + Constants.tesseractOutFile + '.txt',
             ]);
+
+            if (this.appState.deleteOriginalPdf) {
+                unlinkSync(this.appState.existingPdfLocation!);
+            }
         }
 
         console.log(chalk.green('Done.'));
