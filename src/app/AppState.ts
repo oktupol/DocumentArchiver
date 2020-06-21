@@ -7,8 +7,10 @@ export interface AppState {
     documentDate: Date;
     documentLang: string;
     paperFormat: PaperFormat;
-    serialNumber: number;
+    serialNumber: string;
     documentDirectory: string;
+    isExistingPdf: boolean;
+    existingPdfLocation: string | null;
 }
 
 @injectable()
@@ -18,8 +20,11 @@ export class AppStateImpl implements AppState {
     private _documentDate: Date | null = null;
     private _documentLang: string | null = null;
     private _paperFormat: PaperFormat | null = null;
-    private _serialNumber: number | null = null;
+    private _serialNumber: string | null = null;
     private _documentDirectory: string | null = null;
+    private _isExistingPdf: boolean | null = null;
+
+    public existingPdfLocation: string | null = null;
 
     get documentName(): string {
         if (this._documentName === null) {
@@ -76,14 +81,14 @@ export class AppStateImpl implements AppState {
         this._paperFormat = paperFormat;
     }
 
-    get serialNumber(): number {
+    get serialNumber(): string {
         if (this._serialNumber === null) {
             throw new Error('Illegal state: serial number may not be null');
         }
         return this._serialNumber;
     }
 
-    set serialNumber(serialNumber: number) {
+    set serialNumber(serialNumber: string) {
         this._serialNumber = serialNumber;
     }
 
@@ -96,5 +101,16 @@ export class AppStateImpl implements AppState {
 
     set documentDirectory(documentDirectory: string) {
         this._documentDirectory = documentDirectory;
+    }
+
+    get isExistingPdf(): boolean {
+        if (this._isExistingPdf === null) {
+            throw new Error('Illegal state: is existing pdf may not be null');
+        }
+        return this._isExistingPdf;
+    }
+
+    set isExistingPdf(isExistingPdf: boolean) {
+        this._isExistingPdf = isExistingPdf;
     }
 }

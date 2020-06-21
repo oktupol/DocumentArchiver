@@ -2,6 +2,7 @@ import { PaperFormat } from './interfaces/PaperFormat';
 
 export class Constants {
     public static serialNumberFile = '.da-serial-number';
+    public static digitalSerialNumberFile = '.da-digital-serial-number';
     public static pageNumberLength = 4;
     public static serialNumberLength = 6;
     public static newCategory = 'New Category';

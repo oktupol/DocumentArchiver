@@ -12,7 +12,7 @@ import { SerialNumber } from '../services/SerialNumber';
 export interface Setup {
     checkPrerequisites(): void;
 
-    setup(): Promise<AppState>;
+    setup(): Promise<boolean>;
 }
 
 @injectable()
@@ -33,6 +33,10 @@ export class SetupImpl {
             throw new Error('Missing dependency sane.');
         }
 
+        if (!sync('pdftotext')) {
+            throw new Error('Missing dependency pdftotext');
+        }
+
         if (this.rc.archiveDirectory === null) {
             throw new Error('An arcive directory has to be specified at ~/.documentarchiverrc.');
         }
@@ -40,15 +44,19 @@ export class SetupImpl {
         if (this.archiveDirectoryExists() && !this.isArchiveDirectory()) {
             throw new Error('Archive directory location already exists and is not an archive');
         }
+
+        if (this.appState.isExistingPdf && !existsSync(this.appState.existingPdfLocation!)) {
+            throw new Error('Passed pdf file does not exist');
+        }
     }
 
-    public async setup(): Promise<AppState> {
+    public async setup(): Promise<boolean> {
         return prompt(this.createQuestions())
             .then(
                 answers =>
-                    new Promise<AppState>((resolve, reject) => {
+                    new Promise<boolean>((resolve, reject) => {
                         if (!this.archiveDirectoryExists() && answers.createDirectory !== true) {
-                            reject(new Error('Chose not to create directory.'));
+                            resolve(false);
                         }
 
                         if (
@@ -68,17 +76,23 @@ export class SetupImpl {
                         } else {
                             this.appState.documentCategory = answers.documentCategory;
                         }
-                        this.appState.documentLang = answers.documentLang;
                         this.appState.documentDate = new Date(answers.documentDate);
-                        this.appState.paperFormat = this.paperFormats.getPaperFormat(answers.paperFormat);
                         this.appState.documentDirectory = this.formatDocumentDirectory(
                             this.appState.documentCategory,
                             this.appState.documentDate,
                             this.appState.documentName
                         );
-                        this.appState.serialNumber = this.serialNumber.currentSerialNumber;
 
-                        resolve(this.appState);
+                        if (!this.appState.isExistingPdf) {
+                            this.appState.paperFormat = this.paperFormats.getPaperFormat(answers.paperFormat);
+                            this.appState.documentLang = answers.documentLang;
+                        }
+
+                        this.appState.serialNumber = this.appState.isExistingPdf
+                            ? 'D' + this.serialNumber.currentDigitalSerialNumber
+                            : '' + this.serialNumber.currentSerialNumber;
+
+                        resolve(true);
                     })
             )
             .catch((error: Error) => {
@@ -101,13 +115,19 @@ export class SetupImpl {
     private createArchiveDirectory(): void {
         mkdirSync(this.rc.archiveDirectory!);
         writeFileSync(this.rc.archiveDirectory + '/' + Constants.serialNumberFile, '1');
+        writeFileSync(this.rc.archiveDirectory + '/' + Constants.digitalSerialNumberFile, '1');
     }
 
     private formatDocumentDirectory(category: string, date: Date, name: string): string {
         const year = Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
         const month = Intl.DateTimeFormat('en', { month: '2-digit' }).format(date);
         const day = Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
-        const serialNumber = ('' + this.serialNumber.currentSerialNumber).padStart(Constants.serialNumberLength, '0');
+
+        const serialNumber = this.appState.isExistingPdf
+            ? 'D' + this.serialNumber.currentDigitalSerialNumber
+            : this.serialNumber.currentSerialNumber;
+
+        const paddedSerialNumber = ('' + serialNumber).padStart(Constants.serialNumberLength, '0');
 
         return (
             this.rc.archiveDirectory +
@@ -122,7 +142,7 @@ export class SetupImpl {
             '-' +
             this.escapeDirectoryName(name).substr(0, 20) +
             '-' +
-            serialNumber
+            paddedSerialNumber
         );
     }
 
@@ -133,6 +153,10 @@ export class SetupImpl {
     private createQuestions(): QuestionCollection {
         const shouldCreateDocument = (answers: Answers): boolean => {
             return answers.createDirectory === true || this.isArchiveDirectory();
+        };
+
+        const shouldScanDocument = (answers: Answers): boolean => {
+            return shouldCreateDocument(answers) && !this.appState.isExistingPdf;
         };
 
         const notEmpty = (input: string): boolean | string => {
@@ -199,7 +223,7 @@ export class SetupImpl {
                 name: 'documentLang',
                 message: 'Which language is the document in?',
                 default: this.rc.tesseractLang,
-                when: shouldCreateDocument,
+                when: shouldScanDocument,
             },
             {
                 type: 'list',
@@ -207,7 +231,7 @@ export class SetupImpl {
                 message: 'Which format is the document in?',
                 default: this.rc.paperFormat?.name,
                 choices: Object.keys(Constants.paperFormats),
-                when: shouldCreateDocument,
+                when: shouldScanDocument,
             },
         ];
 
