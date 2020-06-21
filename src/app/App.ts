@@ -47,12 +47,14 @@ export class AppImpl implements App {
             })
             .then(pages => {
                 console.log();
-                console.log(chalk.gray('Done compiling pdf'));
-                console.log(chalk.gray('Removing raw images'));
+                process.stdout.write(chalk.gray('Removing raw images...'));
 
                 for (const page of pages) {
                     unlinkSync(page.scanLocation);
+                    process.stdout.write(chalk.gray('.'));
                 }
+
+                console.log();
 
                 const pdfFileName = this.appState.documentName.replace(Constants.escapePattern, '-');
 
