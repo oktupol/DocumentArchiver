@@ -39,9 +39,6 @@ export class AppImpl implements App {
             })
             .then(pages => {
                 this.logSerialNumber();
-                return pages;
-            })
-            .then(pages => {
                 process.stdout.write(chalk.gray('Compiling pdf...'));
                 return this.transscribePages(pages);
             })
