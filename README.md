@@ -40,7 +40,7 @@ This program uses Sane's scanimage utility. On Ubuntu, install it with `sudo apt
 Before the first use, you have to set few defaults in a file called `.documentarchiverrc` in your home directory. There are following settings:
 
 - archiveDirectory (mandatory): The directory in which your archive should be stored. If it doesn't exist, this program will create it upon first usage.
-- paperFormat (optional): The default paper format you scan your documents in. For example 'a4' or 'a5'. Currently, only DIN (international) paper formats from A4 to A6 are supported. If you need American paper formats, you can amend them in the file `src/Constants.ts`. The program will ask about the paper format for each document and, if set, automatically pre-select the configured default paper format so that you only have to confirm it with Enter.
+- paperFormat (optional): The default paper format you scan your documents in. For example 'a4' or 'a5'. Currently, only some DIN formats are supported, see `src/Constants.ts`. If you need other formats, such as American paper formats, you can amend them in the file `src/Constants.ts`. The program will ask about the paper format for each document and, if set, automatically pre-select the configured default paper format so that you only have to confirm it with Enter.
 - scannerDeviceName (optional): The scanner device name as determined by `scanimage -L`. If not set, no device name will be passed to `scanimage` and the system default scanner will be used.
 - tesseractLang (optional): The language which `tesseract` should use. Use the same format for specifying the language as `tesseract` expects for its `-l` parameter. If none is specified, none will be passed on.
 

@@ -11,19 +11,28 @@ export class Constants {
 
     public static paperFormats: Record<string, PaperFormat> = {
         a4: {
+            // Regular A4 sheets, portrait orientation
             name: 'a4',
             width: 210,
             height: 297,
         },
         a5: {
+            // Regular A5 sheets, portrait orientation
             name: 'a5',
             width: 148,
             height: 210,
         },
-        a6: {
-            name: 'a6',
-            width: 105,
+        a5landscape: {
+            // Regular A5 sheets, landscape orientation
+            name: 'a5landscape',
+            width: 210,
             height: 148,
+        },
+        a6a5: {
+            // A6/A5 sheets, such as printed bank statements, landscape orientation
+            name: 'a6a5',
+            width: 210,
+            height: 105,
         },
     };
 }
