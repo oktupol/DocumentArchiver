@@ -88,9 +88,9 @@ export class SetupImpl {
                             this.appState.documentLang = answers.documentLang;
                         }
 
-                        this.appState.serialNumber = this.appState.isExistingPdf
-                            ? 'D' + this.serialNumber.currentDigitalSerialNumber
-                            : '' + this.serialNumber.currentSerialNumber;
+                        this.appState.serialNumber =
+                            (this.appState.serialNumberPrefix ? this.appState.serialNumberPrefix.toUpperCase() : '') +
+                            this.serialNumber.currentSerialNumber;
 
                         resolve(true);
                     })
@@ -123,9 +123,9 @@ export class SetupImpl {
         const month = Intl.DateTimeFormat('en', { month: '2-digit' }).format(date);
         const day = Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
 
-        const serialNumber = this.appState.isExistingPdf
-            ? 'D' + this.serialNumber.currentDigitalSerialNumber
-            : this.serialNumber.currentSerialNumber;
+        const serialNumber =
+            (this.appState.serialNumberPrefix ? this.appState.serialNumberPrefix.toUpperCase() : '') +
+            this.serialNumber.currentSerialNumber;
 
         const paddedSerialNumber = ('' + serialNumber).padStart(Constants.serialNumberLength, '0');
 

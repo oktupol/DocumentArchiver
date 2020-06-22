@@ -92,11 +92,7 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
 
         console.log(chalk.gray(`Created directory ${documentDirectory}`));
 
-        if (this.appState.isExistingPdf) {
-            this.serialNumber.incrementDigitalSerialNumber();
-        } else {
-            this.serialNumber.incrementSerialNumber();
-        }
+        this.serialNumber.incrementSerialNumber();
     }
 
     private async scanPages(): Promise<Array<Page>> {

@@ -12,6 +12,7 @@ export interface AppState {
     isExistingPdf: boolean;
     existingPdfLocation: string | null;
     deleteOriginalPdf: boolean | null;
+    serialNumberPrefix: string | null;
 }
 
 @injectable()
@@ -27,6 +28,7 @@ export class AppStateImpl implements AppState {
 
     public existingPdfLocation: string | null = null;
     public deleteOriginalPdf: boolean | null = null;
+    public serialNumberPrefix: string | null = null;
 
     get documentName(): string {
         if (this._documentName === null) {

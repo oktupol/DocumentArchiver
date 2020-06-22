@@ -3,23 +3,24 @@ import { TYPES } from '../TYPES';
 import { Rc } from './Rc';
 import { Constants } from '../Constants';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { AppState } from '../app/AppState';
 
 export interface SerialNumber {
     currentSerialNumber: number;
     incrementSerialNumber(): void;
-
-    currentDigitalSerialNumber: number;
-    incrementDigitalSerialNumber(): void;
 }
 
 @injectable()
 export class SerialNumberImpl implements SerialNumber {
     private serialNumberFilePath: string;
-    private digitalSerialNumberFilePath: string;
 
-    constructor(@inject(TYPES.Rc) private rc: Rc) {
-        this.serialNumberFilePath = this.rc.archiveDirectory + '/' + Constants.serialNumberFile;
-        this.digitalSerialNumberFilePath = this.rc.archiveDirectory + '/' + Constants.digitalSerialNumberFile;
+    constructor(@inject(TYPES.Rc) private rc: Rc, @inject(TYPES.AppState) private appState: AppState) {
+        if (this.appState.serialNumberPrefix) {
+            this.serialNumberFilePath =
+                this.rc.archiveDirectory + '/' + Constants.serialNumberFile + '-' + appState.serialNumberPrefix;
+        } else {
+            this.serialNumberFilePath = this.rc.archiveDirectory + '/' + Constants.serialNumberFile;
+        }
     }
 
     private _getSerialNumber(filePath: string): number {
@@ -40,17 +41,5 @@ export class SerialNumberImpl implements SerialNumber {
 
     public incrementSerialNumber(): void {
         this.currentSerialNumber = this.currentSerialNumber + 1;
-    }
-
-    public get currentDigitalSerialNumber(): number {
-        return this._getSerialNumber(this.digitalSerialNumberFilePath);
-    }
-
-    public set currentDigitalSerialNumber(newSerialNumber: number) {
-        writeFileSync(this.digitalSerialNumberFilePath, `${newSerialNumber}`);
-    }
-
-    public incrementDigitalSerialNumber(): void {
-        this.currentDigitalSerialNumber = this.currentDigitalSerialNumber + 1;
     }
 }
