@@ -36,7 +36,7 @@ export class AppImpl implements App {
         }
 
         const pdfFileName = this.appState.documentName.replace(Constants.escapePattern, '-');
-        const pdfDestination = this.appState.documentDirectory + '/' + pdfFileName + '.pdf';
+        const pdfDestination = this.appState.documentDirectory + `/${pdfFileName}-${this.appState.serialNumber}.pdf`;
 
         this.createDocumentDirectory();
         this.logSerialNumber();
