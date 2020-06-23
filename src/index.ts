@@ -16,7 +16,9 @@ program
         'Whether the original pdf file should be deleted. Implies "-x d" unless otherwise specified.',
         false
     )
-    .option('-x, --prefix <prefix>', 'Serial number prefix');
+    .option('-x, --prefix <prefix>', 'Serial number prefix')
+    .option('-h, --height <height>', 'Specify the height of the document to be scanned in millimetres')
+    .option('-w, --width <width>', 'Specify the width of the document to be scanned in millimetres');
 
 program.parse(process.argv);
 
@@ -33,6 +35,15 @@ if (program.pdfFile) {
 
 if (program.prefix) {
     state.serialNumberPrefix = program.prefix.toLowerCase();
+}
+
+if (program.height && program.width) {
+    state.customPaperFormat = true;
+    state.paperFormat = {
+        name: 'custom',
+        height: +program.height,
+        width: +program.width,
+    };
 }
 
 myContainer.get<App>(TYPES.App).run();

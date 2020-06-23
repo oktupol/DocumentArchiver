@@ -7,6 +7,7 @@ export interface AppState {
     documentDate: Date;
     documentLang: string;
     paperFormat: PaperFormat;
+    customPaperFormat: boolean;
     serialNumber: string;
     documentDirectory: string;
     isExistingPdf: boolean;
@@ -29,6 +30,8 @@ export class AppStateImpl implements AppState {
     public existingPdfLocation: string | null = null;
     public deleteOriginalPdf: boolean | null = null;
     public serialNumberPrefix: string | null = null;
+
+    public customPaperFormat: boolean = false;
 
     get documentName(): string {
         if (this._documentName === null) {

@@ -84,8 +84,11 @@ export class SetupImpl {
                         );
 
                         if (!this.appState.isExistingPdf) {
-                            this.appState.paperFormat = this.paperFormats.getPaperFormat(answers.paperFormat);
                             this.appState.documentLang = answers.documentLang;
+
+                            if (!this.appState.customPaperFormat) {
+                                this.appState.paperFormat = this.paperFormats.getPaperFormat(answers.paperFormat);
+                            }
                         }
 
                         this.appState.serialNumber =
@@ -231,7 +234,7 @@ export class SetupImpl {
                 message: 'Which format is the document in?',
                 default: this.rc.paperFormat?.name,
                 choices: Object.keys(Constants.paperFormats),
-                when: shouldScanDocument,
+                when: answers => shouldScanDocument(answers) && !this.appState.customPaperFormat,
             },
         ];
 
