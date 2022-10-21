@@ -5,13 +5,14 @@ import { AppState } from './AppState';
 import { Pages } from '../services/Pages';
 import { Tesseract } from '../services/tesseract/Tesseract';
 import { Scanner } from '../services/scanner/Scanner';
-import { mkdirSync, writeFileSync, unlinkSync, renameSync, copyFileSync } from 'fs';
+import { mkdirSync, unlinkSync, renameSync, copyFileSync, rmdirSync } from 'fs';
 import chalk from 'chalk';
 import { SerialNumber } from '../services/SerialNumber';
 import { prompt } from 'inquirer';
 import { Page } from '../interfaces/Page';
 import { Constants } from '../Constants';
 import { spawnSync } from 'child_process';
+import { dirname } from 'path';
 
 export interface App {
     run(): Promise<void>;
@@ -35,8 +36,12 @@ export class AppImpl implements App {
             return;
         }
 
+        const month = Intl.DateTimeFormat('en', { month: '2-digit' }).format(this.appState.documentDate);
+        const day = Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.appState.documentDate);
         const pdfFileName = this.appState.documentName.replace(Constants.escapePattern, '-');
-        const pdfDestination = this.appState.documentDirectory + `/${pdfFileName}-${this.appState.serialNumber}.pdf`;
+        const pdfDestination =
+            dirname(this.appState.documentDirectory) +
+            `/${month}-${day}-${pdfFileName}-${this.appState.serialNumber}.pdf`;
 
         this.createDocumentDirectory();
         this.logSerialNumber();
@@ -75,24 +80,16 @@ export class AppImpl implements App {
             }
         }
 
+        rmdirSync(this.appState.documentDirectory, { recursive: true });
+        this.serialNumber.incrementSerialNumber();
         console.log(chalk.green('Done.'));
     }
 
     private createDocumentDirectory(): void {
-        const { serialNumber, documentDirectory } = this.appState;
+        const { documentDirectory } = this.appState;
         mkdirSync(documentDirectory, { recursive: true });
-        writeFileSync(
-            `${documentDirectory}/${serialNumber}.docid`,
-            `ID: ${serialNumber}
-Name: ${this.appState.documentName}
-Category: ${this.appState.documentCategory}
-Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
-`
-        );
 
-        console.log(chalk.gray(`Created directory ${documentDirectory}`));
-
-        this.serialNumber.incrementSerialNumber();
+        console.log(chalk.gray(`Created temporary directory ${documentDirectory}`));
     }
 
     private async scanPages(): Promise<Array<Page>> {
@@ -169,7 +166,7 @@ Date: ${this.appState.documentDate.toLocaleDateString('en-GB', { year: 'numeric'
         try {
             this.setup.checkPrerequisites();
         } catch (e) {
-            console.error(e.message);
+            console.error((e as Error).message);
             process.exit(1);
         }
     }
