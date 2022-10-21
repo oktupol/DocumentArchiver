@@ -36,12 +36,13 @@ export class AppImpl implements App {
             return;
         }
 
+        const year = Intl.DateTimeFormat('en', { year: 'numeric' }).format(this.appState.documentDate);
         const month = Intl.DateTimeFormat('en', { month: '2-digit' }).format(this.appState.documentDate);
         const day = Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.appState.documentDate);
         const pdfFileName = this.appState.documentName.replace(Constants.escapePattern, '-');
         const pdfDestination =
             dirname(this.appState.documentDirectory) +
-            `/${month}-${day}-${pdfFileName}-${this.appState.serialNumber}.pdf`;
+            `/${year}-${month}-${day}-${pdfFileName}-${this.appState.serialNumber}.pdf`;
 
         this.createDocumentDirectory();
         this.logSerialNumber();
