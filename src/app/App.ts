@@ -5,7 +5,7 @@ import { AppState } from './AppState';
 import { Pages } from '../services/Pages';
 import { Tesseract } from '../services/tesseract/Tesseract';
 import { Scanner } from '../services/scanner/Scanner';
-import { mkdirSync, unlinkSync, renameSync, copyFileSync, rmdirSync } from 'fs';
+import { mkdirSync, unlinkSync, renameSync, copyFileSync, rmSync } from 'fs';
 import chalk from 'chalk';
 import { SerialNumber } from '../services/SerialNumber';
 import { prompt } from 'inquirer';
@@ -81,7 +81,7 @@ export class AppImpl implements App {
             }
         }
 
-        rmdirSync(this.appState.documentDirectory, { recursive: true });
+        rmSync(this.appState.documentDirectory, { recursive: true });
         this.serialNumber.incrementSerialNumber();
         console.log(chalk.green('Done.'));
     }
