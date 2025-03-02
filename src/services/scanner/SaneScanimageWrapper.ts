@@ -45,7 +45,7 @@ export class SaneScanimageWrapperImpl implements SaneScanimageWrapper {
             command += ` -t ${yOffset}`;
         }
 
-        command += ` --format jpeg -o ${outFile}`;
+        command += ` --mode Color --format jpeg -o ${outFile}`;
 
         await promisify(exec)(command);
 
